@@ -1,4 +1,4 @@
-# Game_of_Life
+# Game of Life
 　This is a self-made version for game of life, whose graphics library is [EasyX](https://docs.easyx.cn/).  
 　For programming easily, the matrix templates library [Eigen](http://eigen.tuxfamily.org) is used. What's more, cuz I don't want to manage memory explicitly, its **RAM usage maybe quite bigger** than a normal range-limited game of life.
 ## Programme
