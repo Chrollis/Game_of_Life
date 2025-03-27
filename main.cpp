@@ -7,33 +7,39 @@ int __stdcall WinMain(
     _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPSTR lpCmdLine,
     _In_ int nShowCmd) {
+    clock_t last_tick = clock();
+    clock_t current_tick = clock();
+    ExMessage msg;
 
-    fpsController fpsC;
-    initgraph(graphW, graphH, EX_DBLCLKS);
+    initgraph(graph_side_length, graph_side_length);
+    gaming.enter();
+    gaming.fps_controller.set(12);
 
     BeginBatchDraw();
 
-    fpsC.set(gaming.fps);
+    while (1) {
+        gaming.fps_controller.start();
 
-    while (true) {
-        fpsC.start();
-
-        gaming.progress(fpsC);
-
-        gaming.move();
-        if (gaming.running) {
-            gaming.upgrade();
+        while (peekmessage(&msg)) {
+            gaming.input(msg);
         }
+
+        current_tick = clock();
+        gaming.proceed(current_tick - last_tick);
+        last_tick = current_tick;
 
         cleardevice();
         gaming.draw();
-        fpsC.draw();
+        gaming.fps_controller.draw();
+
         FlushBatchDraw();
 
-        fpsC.delay();
+        gaming.fps_controller.delay();
     }
 
     EndBatchDraw();
 
+    
+    closegraph();
     return 0;
 }
